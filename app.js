@@ -11,12 +11,12 @@ const table = base('testing');
 const app = express();
 
 
-app.use(express.static("public"));
-
+// app.use(express.static("public"));
 
 app.get("/", (req, res) => {
     res.send("hello");
 })
+
 app.get("/fetch", async (req, res) => {
     const records = await table.select({maxRecords: 3, view: "Grid view"}).firstPage();
 
@@ -29,6 +29,7 @@ app.get("/fetch", async (req, res) => {
 
     res.send({id: retrieved_record_id, names: retrieved_record_name});
 })
+
 
 // app.listen(5500, "127.0.0.1");
 app.listen(5500);
