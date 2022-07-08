@@ -1,6 +1,5 @@
 const express = require("express");
 const cors = require("cors");
-app.use(cors());
 require("dotenv").config();
 
 console.log("here?");
@@ -11,7 +10,7 @@ const base = new Airtable({apiKey: process.env.API_KEY}).base(process.env.BASE_I
 const table = base('testing');
 
 const app = express();
-
+app.use(cors());
 
 // app.use(express.static("public"));
 
