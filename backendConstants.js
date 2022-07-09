@@ -18,7 +18,7 @@ exports.myTables = {
 // data
 
 const userNames_and_numOfTweets = {
-    "user1":17, "user2":120, "user3":134, "user4":128, "user5":93, "user6":225, "user7":213, "user8":39, "user9":33, "user10":35
+    "user1": [10, 7], "user2":[50, 70], "user3":[80, 54], "user4":[60, 68], "user5":[50, 43], "user6":[125, 100], "user7":[100, 113], "user8":[10, 29], "user9":[20, 13], "user10":[20, 15]
 }
 
 exports.myConstants = {
