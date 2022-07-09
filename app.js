@@ -37,15 +37,19 @@ app.get("/get/:userName/:originalAmount/:likedAmount", async (req, res) => {
     
     let originalTweetRecords = records[0];
     let likedTweetRecords = records[1];
-    // let retrieved_record_id = [];
-    // let retrieved_record_name = [];
-    // records.forEach(function(record) {
-    //     retrieved_record_id.push(record.getId());
-    //     retrieved_record_name.push(record.get("Name"));
-    // })
 
-    // res.send({id: retrieved_record_id, names: retrieved_record_name});
-    res.send({originalTweetRecords, likedTweetRecords});
+
+    let retrievedOriginalRecordContent = [];
+    originalTweetRecords.forEach(function(record) {
+        retrievedOriginalRecordContent.push(record.get("content"));
+    })
+
+    let retrievedLikedRecordContent = [];
+    likedTweetRecords.forEach(function(record) {
+        retrievedLikedRecordContent.push(record.get("content"));
+    })
+
+    res.send({retrievedOriginalRecordContent, retrievedLikedRecordContent});
 })
 
 // app.listen(5500, "127.0.0.1");
