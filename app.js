@@ -1,6 +1,6 @@
 const {myTables} = require("./backendConstants.js");
 const {getRandomTweetMain} = require("./getRandomTweets.js");
-console.log(getRandomTweetMain);
+console.log("Running app.js...");
 
 // setting up app
 const express = require("express");
@@ -12,25 +12,36 @@ app.get("/", (req, res) => {
     res.send("hello");
 })
 
-// app.get("/fetch", async (req, res) => {
-//     const records = await table.select({maxRecords: 3, view: "Grid view"}).firstPage();
+app.get("/getTwitterUser/:presentedUserNumber/:mainTableName", async (req, res) => {
 
-//     let retrieved_record_id = [];
-//     let retrieved_record_name = [];
-//     records.forEach(function(record) {
-//         retrieved_record_id.push(record.getId());
-//         retrieved_record_name.push(record.get("Name"));
-//     })
+    let twitterUserTable = myTables.baseMain(req.params.mainTableName);
+    try {
+        var records = await twitterUserTable.select({maxRecords: parseInt(req.params.presentedUserNumber), view: "Grid view"}).firstPage();
+    } catch (e) {
+        console.log(e);
+    }
 
-//     res.send({id: retrieved_record_id, names: retrieved_record_name});
-// })
+    let tweetUserRecordIds = [];
+    let tweetUserNames = [];
+    let tweetUserIds = [];
+    let tweetUserPrevVisitedTimes = [];
+
+    records.forEach(function(record) {
+        tweetUserRecordIds.push(record.getId());
+        tweetUserNames.push(record.get('Name'));
+        tweetUserIds.push(record.get('userID'));
+        tweetUserPrevVisitedTimes.push(record.get('ratedTimes'));
+    })
+
+    res.send({tweetUserRecordIds, tweetUserNames, tweetUserIds, tweetUserPrevVisitedTimes});
+})
 
 app.get("/get/:userName/:originalAmount/:likedAmount", async (req, res) => {
     let targetTweetsTable = myTables.baseMain(req.params.userName);
     try {
         var records = await getRandomTweetMain(req.params.originalAmount, req.params.likedAmount, req.params.userName, targetTweetsTable);
 
-        console.log(records[0], records[1]);
+        // console.log(records[0], records[1]);
     } catch (e) {
         console.log(e);
     }
