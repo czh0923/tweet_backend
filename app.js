@@ -36,10 +36,10 @@ app.get("/getTwitterUser/:presentedUserNumber/:mainTableName", async (req, res) 
     res.send({tweetUserRecordIds, tweetUserNames, tweetUserIds, tweetUserPrevVisitedTimes});
 })
 
-app.get("/get/:userName/:originalAmount/:likedAmount", async (req, res) => {
+app.get("/get/:userName/:originalAmount/:likesAmount", async (req, res) => {
     let targetTweetsTable = myTables.baseMain(req.params.userName);
     try {
-        var records = await getRandomTweetMain(req.params.originalAmount, req.params.likedAmount, req.params.userName, targetTweetsTable);
+        var records = await getRandomTweetMain(req.params.originalAmount, req.params.likesAmount, req.params.userName, targetTweetsTable);
 
         // console.log(records[0], records[1]);
     } catch (e) {
@@ -47,7 +47,7 @@ app.get("/get/:userName/:originalAmount/:likedAmount", async (req, res) => {
     }
     
     let originalTweetRecords = records[0];
-    let likedTweetRecords = records[1];
+    let likesTweetRecords = records[1];
 
 
     let retrievedOriginalRecordContent = [];
@@ -55,12 +55,12 @@ app.get("/get/:userName/:originalAmount/:likedAmount", async (req, res) => {
         retrievedOriginalRecordContent.push(record.get("content"));
     })
 
-    let retrievedLikedRecordContent = [];
-    likedTweetRecords.forEach(function(record) {
-        retrievedLikedRecordContent.push(record.get("content"));
+    let retrievedLikesRecordContent = [];
+    likesTweetRecords.forEach(function(record) {
+        retrievedLikesRecordContent.push(record.get("content"));
     })
 
-    res.send({retrievedOriginalRecordContent, retrievedLikedRecordContent});
+    res.send({retrievedOriginalRecordContent, retrievedLikesRecordContent});
 })
 
 // app.listen(5500, "127.0.0.1");
