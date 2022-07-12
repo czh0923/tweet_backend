@@ -1,10 +1,12 @@
 const {myTables} = require("./backendConstants.js");
 const {getRandomTweetMain} = require("./getRandomTweets.js");
+const {storeResultAndUpdateVisitedMain} = require("./storeResultAndUpdateVisited.js");
 console.log("Running app.js...");
 
 // setting up app
 const express = require("express");
 const cors = require("cors");
+const { json } = require("express");
 const app = express();
 app.use(cors());
 
@@ -12,9 +14,9 @@ app.get("/", (req, res) => {
     res.send("hello");
 })
 
-app.get("/getTwitterUser/:presentedUserNumber/:mainTableName", async (req, res) => {
+app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
 
-    let twitterUserTable = myTables.baseMain(req.params.mainTableName);
+    let twitterUserTable = myTables.twitterUserTable;
     try {
         var records = await twitterUserTable.select({maxRecords: parseInt(req.params.presentedUserNumber), view: "Grid view"}).firstPage();
     } catch (e) {
@@ -63,9 +65,25 @@ app.get("/get/:userName/:originalAmount/:likesAmount", async (req, res) => {
     res.send({retrievedOriginalRecordContent, retrievedLikesRecordContent});
 })
 
-// app.get("", (req, res) => {
 
-// })
+app.put("/put/:tweetUserNames/:tweetUserIds/:participantInput/:participantId/:tweetUserPrevVisitedTimes/:tweetUserRecordIds", async (req, res) => {
 
+    let tweetUserNames = JSON.parse(req.params.tweetUserNames);
+    let tweetUserIds = JSON.parse(req.params.tweetUserIds);
+    let participantInput = JSON.parse(req.params.participantInput);
+    let participantId = req.params.participantId;
+
+    let tweetUserPrevVisitedTimes = JSON.parse(req.params.tweetUserPrevVisitedTimes);
+    let tweetUserRecordIds = JSON.parse(req.params.tweetUserRecordIds);
+
+    try {
+        await storeResultAndUpdateVisitedMain(tweetUserNames, tweetUserIds, participantInput, participantId, myTables.collectedDataTable, tweetUserPrevVisitedTimes, tweetUserRecordIds, myTables.twitterUserTable);
+    } catch (e) {
+        console.log(e);
+    }
+
+    res.status(200);
+
+})
 // app.listen(5500, "127.0.0.1");
 app.listen(process.env.PORT || 5500);

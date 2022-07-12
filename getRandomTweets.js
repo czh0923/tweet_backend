@@ -75,7 +75,6 @@ async function getRandomTweetMain(presentedOriginalTweetNum, presentedLikedTweet
         console.log(e);
     }
 
-    // console.log("in getRandomTweetMain", recordsForOriginalTweets, recordsForLikedTweets);
 
     return [recordsForOriginalTweets, recordsForLikedTweets]
 }
