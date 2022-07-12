@@ -6,7 +6,6 @@ console.log("Running app.js...");
 // setting up app
 const express = require("express");
 const cors = require("cors");
-const { json } = require("express");
 const app = express();
 app.use(cors());
 
