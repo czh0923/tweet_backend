@@ -76,13 +76,14 @@ app.get("/put/:tweetUserNames/:tweetUserIds/:participantInput/:participantId/:tw
     let tweetUserPrevVisitedTimes = JSON.parse(req.params.tweetUserPrevVisitedTimes);
     let tweetUserRecordIds = JSON.parse(req.params.tweetUserRecordIds);
 
+    console.log(tweetUserNames, tweetUserIds, participantInput, participantId, tweetUserPrevVisitedTimes, tweetUserRecordIds)
     try {
         await storeResultAndUpdateVisitedMain(tweetUserNames, tweetUserIds, participantInput, participantId, myTables.collectedDataTable, tweetUserPrevVisitedTimes, tweetUserRecordIds, myTables.twitterUserTable);
     } catch (e) {
         console.log(e);
     }
 
-    res.status(200);
+    res.status(200).send("ok");
 
 })
 // app.listen(5500, "127.0.0.1");

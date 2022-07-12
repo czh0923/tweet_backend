@@ -3,10 +3,10 @@ function createSubmitData(tweetUserNames, tweetUserIds, participantInput, partic
     // because the api only supports inserting ten records at one time
     let collected_data = [];
 
-    for (let i = 0; i < presented_user_number; i = i + 10) {
+    for (let i = 0; i < tweetUserNames.length; i = i + 10) {
         let batch = [];
         for (let j = i; j < i + 10; j++) {
-            if (j < presented_user_number) {
+            if (j < tweetUserNames.length) {
                 batch.push( 
                     { "fields" : {
                         "twitterUserName": tweetUserNames[j],
@@ -38,7 +38,7 @@ async function insert(targetTable, data) {
 }
 
 async function updateVisitedNum(targetTable, tweetUserPrevVisitedTimes, tweetUserRecordIds) {
-    for (let i = 0; i < presented_user_number; i++) {
+    for (let i = 0; i < tweetUserRecordIds.length; i++) {
         await targetTable.update([{
             "id": tweetUserRecordIds[i],
             "fields": {
