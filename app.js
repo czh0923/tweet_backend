@@ -66,7 +66,7 @@ app.get("/get/:userName/:originalAmount/:likesAmount", async (req, res) => {
 })
 
 
-app.put("/put/:tweetUserNames/:tweetUserIds/:participantInput/:participantId/:tweetUserPrevVisitedTimes/:tweetUserRecordIds", async (req, res) => {
+app.get("/put/:tweetUserNames/:tweetUserIds/:participantInput/:participantId/:tweetUserPrevVisitedTimes/:tweetUserRecordIds", async (req, res) => {
 
     let tweetUserNames = JSON.parse(req.params.tweetUserNames);
     let tweetUserIds = JSON.parse(req.params.tweetUserIds);
