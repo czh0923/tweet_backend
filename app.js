@@ -3,7 +3,7 @@ const {getRandomTweetMain} = require("./getRandomTweets.js");
 const {storeResultAndUpdateVisitedMain} = require("./storeResultAndUpdateVisited.js");
 console.log("Running app.js...");
 
-const DUMMY_VISITEDNUM = 1000;
+const DUMMY_WEIGHT = 0.01;
 
 // setting up app
 const express = require("express");
@@ -33,7 +33,7 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
         tweetUserRecordIds.push(record.getId());
         tweetUserNames.push(record.get('Name'));
         tweetUserIds.push(record.get('userID'));
-        tweetUserPrevVisitedTimes.push(record.get('ratedTimes'));
+        tweetUserPrevVisitedTimes.push(Math.floor(record.get('ratedTimes')));
     })
 
     // update to dummy value to avoid next users pulling wrong prev_visited_times
@@ -41,7 +41,7 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
         await twitterUserTable.update([{
             "id": tweetUserRecordIds[i],
             "fields": {
-              "ratedTimes": DUMMY_VISITEDNUM
+              "ratedTimes": tweetUserPrevVisitedTimes[i] + DUMMY_WEIGHT
             }
         }]);
     }
@@ -117,5 +117,7 @@ app.get("/restore/:tweetUserPrevVisitedTimes/:tweetUserRecordIds", async (req, r
 
     res.status(200).send("ok");
 })
+
+
 // app.listen(5500, "127.0.0.1");
 app.listen(process.env.PORT || 5500);
