@@ -41,7 +41,7 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
         await twitterUserTable.update([{
             "id": tweetUserRecordIds[i],
             "fields": {
-              "ratedTimes": DUMMY_VISITEDNUM;
+              "ratedTimes": DUMMY_VISITEDNUM
             }
         }]);
     }
