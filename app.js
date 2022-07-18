@@ -98,26 +98,6 @@ app.get("/put/:tweetUserNames/:tweetUserIds/:participantInput/:participantId/:tw
 
 })
 
-
-app.get("/restore/:tweetUserPrevVisitedTimes/:tweetUserRecordIds", async (req, res) => {
-
-    let twitterUserTable = myTables.twitterUserTable;
-
-    let tweetUserPrevVisitedTimes = JSON.parse(req.params.tweetUserPrevVisitedTimes);
-    let tweetUserRecordIds = JSON.parse(req.params.tweetUserRecordIds);
-
-    for (let i = 0; i < tweetUserRecordIds.length; i++) {
-        await twitterUserTable.update([{
-            "id": tweetUserRecordIds[i],
-            "fields": {
-              "ratedTimes": tweetUserPrevVisitedTimes[i]
-            }
-        }]);
-    }
-
-    res.status(200).send("ok");
-})
-
-
 // app.listen(5500, "127.0.0.1");
 app.listen(process.env.PORT || 5500);
+
