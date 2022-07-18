@@ -3,6 +3,8 @@ const {getRandomTweetMain} = require("./getRandomTweets.js");
 const {storeResultAndUpdateVisitedMain} = require("./storeResultAndUpdateVisited.js");
 console.log("Running app.js...");
 
+const DUMMY_VISITEDNUM = 1000;
+
 // setting up app
 const express = require("express");
 const cors = require("cors");
@@ -33,6 +35,16 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
         tweetUserIds.push(record.get('userID'));
         tweetUserPrevVisitedTimes.push(record.get('ratedTimes'));
     })
+
+    // update to dummy value to avoid next users pulling wrong prev_visited_times
+    for (let i = 0; i < tweetUserRecordIds.length; i++) {
+        await twitterUserTable.update([{
+            "id": tweetUserRecordIds[i],
+            "fields": {
+              "ratedTimes": DUMMY_VISITEDNUM;
+            }
+        }]);
+    }
 
     res.send({tweetUserRecordIds, tweetUserNames, tweetUserIds, tweetUserPrevVisitedTimes});
 })
@@ -84,6 +96,26 @@ app.get("/put/:tweetUserNames/:tweetUserIds/:participantInput/:participantId/:tw
 
     res.status(200).send("ok");
 
+})
+
+
+app.get("/restore/:tweetUserPrevVisitedTimes/:tweetUserRecordIds", async (req, res) => {
+
+    let twitterUserTable = myTables.twitterUserTable;
+
+    let tweetUserPrevVisitedTimes = JSON.parse(req.params.tweetUserPrevVisitedTimes);
+    let tweetUserRecordIds = JSON.parse(req.params.tweetUserRecordIds);
+
+    for (let i = 0; i < tweetUserRecordIds.length; i++) {
+        await twitterUserTable.update([{
+            "id": tweetUserRecordIds[i],
+            "fields": {
+              "ratedTimes": tweetUserPrevVisitedTimes[i]
+            }
+        }]);
+    }
+
+    res.status(200).send("ok");
 })
 // app.listen(5500, "127.0.0.1");
 app.listen(process.env.PORT || 5500);
