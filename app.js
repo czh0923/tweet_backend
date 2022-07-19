@@ -15,6 +15,36 @@ app.get("/", (req, res) => {
     res.send("hello");
 })
 
+app.get("/try/:presentedUserName", (req, res) => {
+
+    const table = myTables.tempTable;
+
+    var tweetUserRecordIds = [];
+    var tweetUserNames = [];
+
+    table.select({
+        view: "Grid view",
+        filterByFormula: "{visited_times} < 5"
+    }).eachPage(function page(records, fetchNextPage) {
+    
+        records.forEach(function(record) {
+
+            tweetUserRecordIds.push(record.getId());
+            tweetUserNames.push(record.get('Name'));
+        });
+    
+        // To fetch the next page of records, call `fetchNextPage`.
+        // If there are more records, `page` will get called again.
+        // If there are no more records, `done` will get called.
+        fetchNextPage();
+    
+    }, function done(err) {
+        if (err) { console.error(err); return; }
+    });
+
+    res.send({tweetUserRecordIds, tweetUserNames});
+})
+
 app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
 
     let twitterUserTable = myTables.twitterUserTable;

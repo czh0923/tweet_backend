@@ -8,10 +8,14 @@ const base_result = new Airtable({apiKey: process.env.API_KEY}).base('appJjZIZ2X
 const table_tweetUsers = base_main('tweet_user');
 const table_collectedData = base_result('collected_data');
 
+const temp = new Airtable({apiKey: 'keyQUcYkOoAkjWXTV'}).base('app65fzWnjlaxHvUQ');
+const temp_table = temp('final');
+
 exports.myTables = {
     baseMain : base_main,
     twitterUserTable : table_tweetUsers,
-    collectedDataTable : table_collectedData
+    collectedDataTable : table_collectedData,
+    tempTable: temp_table
 };
 
 
