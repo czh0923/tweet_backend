@@ -17,7 +17,6 @@ app.get("/", (req, res) => {
 app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
 
     const table = myTables.finalTable;
-    console.log(table);
 
     var recordIDAndUserName = []; // [[reocrdID, userName], [], []]
 
@@ -38,8 +37,6 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
         recordIDAndUserName = shuffleArray(recordIDAndUserName);
 
         recordIDAndUserName = recordIDAndUserName.slice(0, parseInt(req.params.presentedUserNumber));
-
-        console.log(recordIDAndUserName);
 
         let tweetUserRecordIds = [];
         let tweetUserNames = [];
@@ -91,7 +88,7 @@ app.get("/submit/:tweetUserRecordIds/:participantInput/:participantID", async (r
     let participantID = req.params.participantID;
 
     try {
-        await updateResult(tweetUserRecordIds, participantInput, participantID, finalTable);
+        await updateResult(tweetUserRecordIds, participantInput, participantID, myTables.finalTable);
     } catch (e) {
         console.log(e);
     }

@@ -1,70 +1,13 @@
-function createSubmitData(tweetUserNames, tweetUserIds, participantInput, participantID) {
-    // [[d1,d2,...,d10], [d11,...,d20], ..., [d51,d52]]
-    // because the api only supports inserting ten records at one time
-    let collected_data = [];
-
-    for (let i = 0; i < tweetUserNames.length; i = i + 10) {
-        let batch = [];
-        for (let j = i; j < i + 10; j++) {
-            if (j < tweetUserNames.length) {
-                batch.push( 
-                    { "fields" : {
-                        "twitterUserName": tweetUserNames[j],
-                        "twitterUserID": tweetUserIds[j],
-                        "Choice": participantInput[j],
-                        "participantID": participantID
-                        }   
-                    }
-                );
-            }
-        }
-        collected_data.push(batch);
-    }
-
-    return collected_data;
-}
-
-
-async function insert(targetTable, data) {
-    try {
-        for (let i = 0; i < data.length; i++) {
-            await targetTable.create(data[i]);
-        }
-    } catch (e) {
-        console.log(e);
-        return;
-    }
-
-}
-
-async function updateVisitedNum(targetTable, tweetUserPrevVisitedTimes, tweetUserRecordIds) {
-    for (let i = 0; i < tweetUserRecordIds.length; i++) {
-        await targetTable.update([{
-            "id": tweetUserRecordIds[i],
-            "fields": {
-              "ratedTimes": tweetUserPrevVisitedTimes[i] + 1
-            }
-        }]);
-    }
-}
-
-async function storeResultAndUpdateVisitedMain(tweetUserNames, tweetUserIds, participantInput, participantID, collectedDataTable, tweetUserPrevVisitedTimes, tweetUserRecordIds, twitterUserTable) {
-    let collectedData = createSubmitData(tweetUserNames, tweetUserIds, participantInput, participantID);
-    await insert(collectedDataTable, collectedData);
-
-    await updateVisitedNum(twitterUserTable, tweetUserPrevVisitedTimes, tweetUserRecordIds);
-}
-
 async function getPrevVisitedTimes(finalTable, recordID) {
-    const record = finalTable.find(recordID);
-    return record.get('visited_times');
+    const record = await finalTable.find(recordID);
+    return parseInt(record.get('visited_times'));
 }
 
 async function updateResult(tweetUserRecordIds, participantInput, participantID, finalTable) {
 
     for (let i = 0; i < tweetUserRecordIds.length; i++) {
 
-        const prevVisitedTimes = getPrevVisitedTimes(finalTable, tweetUserRecordIds[i]);
+        const prevVisitedTimes = await getPrevVisitedTimes(finalTable, tweetUserRecordIds[i]);
 
         const columnC = "c" + (prevVisitedTimes + 1).toString();
         const columnP = "p" + (prevVisitedTimes + 1).toString();
@@ -78,7 +21,7 @@ async function updateResult(tweetUserRecordIds, participantInput, participantID,
             }
         }]);
 
-
+        console.log("updating record", tweetUserRecordIds[i]);
 
     }
 
