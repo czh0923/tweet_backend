@@ -3,10 +3,9 @@
 require("dotenv").config();
 const Airtable = require('airtable');
 const base_main = new Airtable({apiKey: process.env.API_KEY}).base('appQM4HHXqwvglt66');
-const table_tweetUsers = base_main('tweet_user');
 
 const final_main = new Airtable({apiKey: 'keyQUcYkOoAkjWXTV'}).base('app65fzWnjlaxHvUQ');
-const table_final = temp('final');
+const table_final = final_main('final');
 
 exports.myTables = {
     baseMain : base_main,

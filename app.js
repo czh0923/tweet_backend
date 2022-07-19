@@ -1,10 +1,8 @@
 const {myTables} = require("./backendConstants.js");
 const {getRandomTweetMain} = require("./getRandomTweets.js");
 const {shuffleArray} = require("./getRandomTweets.js");
-const {storeResultAndUpdateVisitedMain} = require("./storeResultAndUpdateVisited.js");
+const {updateResult} = require("./storeResultAndUpdateVisited.js");
 console.log("Running app.js...");
-
-const DUMMY_WEIGHT = 0.01;
 
 // setting up app
 const express = require("express");
@@ -85,37 +83,15 @@ app.get("/get/:userName/:originalAmount/:likesAmount", async (req, res) => {
 })
 
 
-app.get("/put/:tweetUserNames/:tweetUserIds/:participantInput/:participantId/:tweetUserPrevVisitedTimes/:tweetUserRecordIds", async (req, res) => {
-
-    let tweetUserNames = JSON.parse(req.params.tweetUserNames);
-    let tweetUserIds = JSON.parse(req.params.tweetUserIds);
-    let participantInput = JSON.parse(req.params.participantInput);
-    let participantId = req.params.participantId;
-
-    let tweetUserPrevVisitedTimes = JSON.parse(req.params.tweetUserPrevVisitedTimes);
-    let tweetUserRecordIds = JSON.parse(req.params.tweetUserRecordIds);
-
-    console.log(tweetUserNames, tweetUserIds, participantInput, participantId, tweetUserPrevVisitedTimes, tweetUserRecordIds)
-    try {
-        await storeResultAndUpdateVisitedMain(tweetUserNames, tweetUserIds, participantInput, participantId, myTables.collectedDataTable, tweetUserPrevVisitedTimes, tweetUserRecordIds, myTables.twitterUserTable);
-    } catch (e) {
-        console.log(e);
-    }
-
-    res.status(200).send("ok");
-
-})
-
-app.get("/submit/:tweetUserRecordIds/:tweetUserNames/:participantInput/:participantId", async (req, res) => {
+app.get("/submit/:tweetUserRecordIds/:participantInput/:participantID", async (req, res) => {
 
     let tweetUserRecordIds = JSON.parse(req.params.tweetUserRecordIds);
-    let tweetUserNames = JSON.parse(req.params.tweetUserNames);
 
     let participantInput = JSON.parse(req.params.participantInput);
-    let participantId = req.params.participantId;
+    let participantID = req.params.participantID;
 
     try {
-        await storeResultAndUpdateVisitedMain(tweetUserNames, tweetUserIds, participantInput, participantId, myTables.collectedDataTable, tweetUserPrevVisitedTimes, tweetUserRecordIds, myTables.twitterUserTable);
+        await updateResult(tweetUserRecordIds, participantInput, participantID, finalTable);
     } catch (e) {
         console.log(e);
     }
