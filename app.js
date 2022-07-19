@@ -18,7 +18,7 @@ app.get("/", (req, res) => {
 
 app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
 
-    const table = myTables.tempTable;
+    const table = myTables.finalTable;
     console.log(table);
 
     var recordIDAndUserName = []; // [[reocrdID, userName], [], []]
@@ -96,6 +96,24 @@ app.get("/put/:tweetUserNames/:tweetUserIds/:participantInput/:participantId/:tw
     let tweetUserRecordIds = JSON.parse(req.params.tweetUserRecordIds);
 
     console.log(tweetUserNames, tweetUserIds, participantInput, participantId, tweetUserPrevVisitedTimes, tweetUserRecordIds)
+    try {
+        await storeResultAndUpdateVisitedMain(tweetUserNames, tweetUserIds, participantInput, participantId, myTables.collectedDataTable, tweetUserPrevVisitedTimes, tweetUserRecordIds, myTables.twitterUserTable);
+    } catch (e) {
+        console.log(e);
+    }
+
+    res.status(200).send("ok");
+
+})
+
+app.get("/submit/:tweetUserRecordIds/:tweetUserNames/:participantInput/:participantId", async (req, res) => {
+
+    let tweetUserRecordIds = JSON.parse(req.params.tweetUserRecordIds);
+    let tweetUserNames = JSON.parse(req.params.tweetUserNames);
+
+    let participantInput = JSON.parse(req.params.participantInput);
+    let participantId = req.params.participantId;
+
     try {
         await storeResultAndUpdateVisitedMain(tweetUserNames, tweetUserIds, participantInput, participantId, myTables.collectedDataTable, tweetUserPrevVisitedTimes, tweetUserRecordIds, myTables.twitterUserTable);
     } catch (e) {
