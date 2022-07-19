@@ -15,9 +15,10 @@ app.get("/", (req, res) => {
     res.send("hello");
 })
 
-app.get("/try/:presentedUserName", (req, res) => {
+app.get("/try/:presentedUserName", async (req, res) => {
 
     const table = myTables.tempTable;
+    console.log(table);
 
     var tweetUserRecordIds = [];
     var tweetUserNames = [];
@@ -28,14 +29,12 @@ app.get("/try/:presentedUserName", (req, res) => {
     }).eachPage(function page(records, fetchNextPage) {
     
         records.forEach(function(record) {
-
             tweetUserRecordIds.push(record.getId());
             tweetUserNames.push(record.get('Name'));
         });
+
+        console.log(tweetUserNames);
     
-        // To fetch the next page of records, call `fetchNextPage`.
-        // If there are more records, `page` will get called again.
-        // If there are no more records, `done` will get called.
         fetchNextPage();
     
     }, function done(err) {
