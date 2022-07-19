@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
     res.send("hello");
 })
 
-app.get("/try/:presentedUserNumber", async (req, res) => {
+app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
 
     const table = myTables.tempTable;
     console.log(table);
@@ -55,40 +55,6 @@ app.get("/try/:presentedUserNumber", async (req, res) => {
         res.send({tweetUserRecordIds, tweetUserNames});
     });
 
-})
-
-app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
-
-    let twitterUserTable = myTables.twitterUserTable;
-    try {
-        var records = await twitterUserTable.select({maxRecords: parseInt(req.params.presentedUserNumber), view: "Grid view"}).firstPage();
-    } catch (e) {
-        console.log(e);
-    }
-
-    let tweetUserRecordIds = [];
-    let tweetUserNames = [];
-    let tweetUserIds = [];
-    let tweetUserPrevVisitedTimes = [];
-
-    records.forEach(function(record) {
-        tweetUserRecordIds.push(record.getId());
-        tweetUserNames.push(record.get('Name'));
-        tweetUserIds.push(record.get('userID'));
-        tweetUserPrevVisitedTimes.push(Math.floor(record.get('ratedTimes')));
-    })
-
-    // update to dummy value to avoid next users pulling wrong prev_visited_times
-    for (let i = 0; i < tweetUserRecordIds.length; i++) {
-        await twitterUserTable.update([{
-            "id": tweetUserRecordIds[i],
-            "fields": {
-              "ratedTimes": tweetUserPrevVisitedTimes[i] + DUMMY_WEIGHT
-            }
-        }]);
-    }
-
-    res.send({tweetUserRecordIds, tweetUserNames, tweetUserIds, tweetUserPrevVisitedTimes});
 })
 
 app.get("/get/:userName/:originalAmount/:likesAmount", async (req, res) => {
