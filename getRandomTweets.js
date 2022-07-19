@@ -80,3 +80,4 @@ async function getRandomTweetMain(presentedOriginalTweetNum, presentedLikedTweet
 }
 
 exports.getRandomTweetMain = getRandomTweetMain;
+exports.shuffleArray = shuffle;

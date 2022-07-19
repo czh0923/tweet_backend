@@ -1,5 +1,6 @@
 const {myTables} = require("./backendConstants.js");
 const {getRandomTweetMain} = require("./getRandomTweets.js");
+const {shuffleArray} = require("./getRandomTweets.js");
 const {storeResultAndUpdateVisitedMain} = require("./storeResultAndUpdateVisited.js");
 console.log("Running app.js...");
 
@@ -15,13 +16,12 @@ app.get("/", (req, res) => {
     res.send("hello");
 })
 
-app.get("/try/:presentedUserName", async (req, res) => {
+app.get("/try/:presentedUserNumber", async (req, res) => {
 
     const table = myTables.tempTable;
     console.log(table);
 
-    var tweetUserRecordIds = [];
-    var tweetUserNames = [];
+    var recordIDAndUserName = []; // [[reocrdID, userName], [], []]
 
     table.select({
         view: "Grid view",
@@ -29,19 +29,32 @@ app.get("/try/:presentedUserName", async (req, res) => {
     }).eachPage(function page(records, fetchNextPage) {
     
         records.forEach(function(record) {
-            tweetUserRecordIds.push(record.getId());
-            tweetUserNames.push(record.get('Name'));
+            recordIDAndUserName.push([record.getId(), record.get('Name')]);
         });
 
-        console.log(tweetUserNames);
-    
         fetchNextPage();
     
     }, function done(err) {
         if (err) { console.error(err); return; }
+
+        recordIDAndUserName = shuffleArray(recordIDAndUserName);
+
+        recordIDAndUserName = recordIDAndUserName.slice(0, parseInt(req.params.presentedUserNumber));
+
+        console.log(recordIDAndUserName);
+
+        let tweetUserRecordIds = [];
+        let tweetUserNames = [];
+
+        for (let i = 0; i < recordIDAndUserName.length; i++) {
+            tweetUserRecordIds.push(recordIDAndUserName[i][0]);
+            tweetUserNames.push(recordIDAndUserName[i][1]);
+
+        }
+
+        res.send({tweetUserRecordIds, tweetUserNames});
     });
 
-    res.send({tweetUserRecordIds, tweetUserNames});
 })
 
 app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
