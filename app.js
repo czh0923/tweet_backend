@@ -1,6 +1,6 @@
 const {myTables} = require("./backendConstants.js");
 const {getRandomTweetMain} = require("./getRandomTweets.js");
-const {shuffleArray} = require("./getRandomTweets.js");
+const {shuffleArray, getRandomNumber} = require("./getRandomTweets.js");
 const {updateResult} = require("./storeResultAndUpdateVisited.js");
 console.log("Running app.js...");
 
@@ -34,16 +34,14 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
     }, function done(err) {
         if (err) { console.error(err); return; }
 
-        recordIDAndUserName = shuffleArray(recordIDAndUserName);
-
-        recordIDAndUserName = recordIDAndUserName.slice(0, parseInt(req.params.presentedUserNumber));
+        let randomNumber = getRandomNumber(parseInt(req.params.presentedUserNumber), recordIDAndUserName.length);
 
         let tweetUserRecordIds = [];
         let tweetUserNames = [];
 
-        for (let i = 0; i < recordIDAndUserName.length; i++) {
-            tweetUserRecordIds.push(recordIDAndUserName[i][0]);
-            tweetUserNames.push(recordIDAndUserName[i][1]);
+        for (let i = 0; i < randomNumber.length; i++) {
+            tweetUserRecordIds.push(recordIDAndUserName[randomNumber[i]][0]);
+            tweetUserNames.push(recordIDAndUserName[randomNumber[i]][1]);
 
         }
 

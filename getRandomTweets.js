@@ -7,6 +7,23 @@ function shuffle(o) {
     return o;
 };
 
+function getRandomNumber(n, maxValue) {
+    // return an array of n random numbers; maxValue exclusive
+
+    let result = [];
+    while (result.length < n) {
+        let randomNum = Math.floor(Math.random() * maxValue);
+
+        if (!result.includes(randomNum)) {
+            result.push(randomNum);
+        }
+        
+    }
+
+    return result;
+    
+}
+
 function randomRowArrayGenerator(upperBound) {
     // [1, upperBound]
     // Array(5) -> [1,2,3,4,5]
@@ -81,3 +98,4 @@ async function getRandomTweetMain(presentedOriginalTweetNum, presentedLikedTweet
 
 exports.getRandomTweetMain = getRandomTweetMain;
 exports.shuffleArray = shuffle;
+exports.getRandomNumber = getRandomNumber;
