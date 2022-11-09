@@ -14,15 +14,21 @@ app.get("/", (req, res) => {
     res.send("hello");
 })
 
+app.get("/home", (req, res) => {
+    res.send("this is home page");
+})
+
 app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
 
     const table = myTables.finalTable;
+
+    console.log(table);
 
     var allRecordData = []; // [[reocrdID, tweetId, rated, tweet1, type1, ....], [], []]
 
     table.select({
         view: "Grid view",
-        filterByFormula: "{visited_times} < 5"
+        filterByFormula: "{Rated} < 5"
     }).eachPage(function page(records, fetchNextPage) {
     
         records.forEach(function(record) {
@@ -57,8 +63,8 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
             tweetUserNames.push(allRecordData[randomNumber[i]][1]);
 
             for (var j = 1; j <= 10; j++) {
-                tweets.push(allRecordData[randomNumber[i][j * 2 + 1]]);
-                types.push(allRecordData[randomNumber[i][j * 2 + 2]]);
+                tweets.push(allRecordData[randomNumber[i]][j * 2 + 1]);
+                types.push(allRecordData[randomNumber[i]][j * 2 + 2]);
             }
         }
 
