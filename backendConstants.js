@@ -7,9 +7,12 @@ const base_main = new Airtable({apiKey: process.env.API_KEY}).base('appQM4HHXqwv
 const final_main = new Airtable({apiKey: 'keyQUcYkOoAkjWXTV'}).base('app65fzWnjlaxHvUQ');
 const table_final = final_main('final');
 
+// tweetID, #rated, tweet1, type1, .... 
+const base_final_structure = new Airtable({apiKey: process.env.API_KEY}).base('appdqVFUBNdKxao34');
+
 exports.myTables = {
     baseMain : base_main,
-    finalTable: table_final
+    finalTable: base_final_structure
 };
 
 

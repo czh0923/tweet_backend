@@ -18,7 +18,7 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
 
     const table = myTables.finalTable;
 
-    var recordIDAndUserName = []; // [[reocrdID, userName], [], []]
+    var allRecordData = []; // [[reocrdID, tweetId, rated, tweet1, type1, ....], [], []]
 
     table.select({
         view: "Grid view",
@@ -26,7 +26,18 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
     }).eachPage(function page(records, fetchNextPage) {
     
         records.forEach(function(record) {
-            recordIDAndUserName.push([record.getId(), record.get('Name')]);
+            allRecordData.push([record.getId(), record.get('TweetID'), record.get('Rated'), 
+            record.get('Tweet1'), record.get('Type1'), // index: 3, 4
+            record.get('Tweet2'), record.get('Type2'), // 5, 6
+            record.get('Tweet3'), record.get('Type3'), 
+            record.get('Tweet4'), record.get('Type4'),
+            record.get('Tweet5'), record.get('Type5'), 
+            record.get('Tweet6'), record.get('Type6'), 
+            record.get('Tweet7'), record.get('Type7'), 
+            record.get('Tweet8'), record.get('Type8'),
+            record.get('Tweet9'), record.get('Type9'), // 19
+            record.get('Tweet10'), record.get('Type10') // 21, 22
+            ]);
         });
 
         fetchNextPage();
@@ -34,18 +45,24 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
     }, function done(err) {
         if (err) { console.error(err); return; }
 
-        let randomNumber = getRandomNumber(parseInt(req.params.presentedUserNumber), recordIDAndUserName.length);
+        let randomNumber = getRandomNumber(parseInt(req.params.presentedUserNumber), allRecordData.length);
 
         let tweetUserRecordIds = [];
         let tweetUserNames = [];
+        let tweets = [];
+        let types = [];
 
         for (let i = 0; i < randomNumber.length; i++) {
-            tweetUserRecordIds.push(recordIDAndUserName[randomNumber[i]][0]);
-            tweetUserNames.push(recordIDAndUserName[randomNumber[i]][1]);
+            tweetUserRecordIds.push(allRecordData[randomNumber[i]][0]);
+            tweetUserNames.push(allRecordData[randomNumber[i]][1]);
 
+            for (var j = 1; j <= 10; j++) {
+                tweets.push(allRecordData[randomNumber[i][j * 2 + 1]]);
+                types.push(allRecordData[randomNumber[i][j * 2 + 2]]);
+            }
         }
 
-        res.send({tweetUserRecordIds, tweetUserNames});
+        res.send({tweetUserRecordIds, tweetUserNames, tweets, types});
     });
 
 })
