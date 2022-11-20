@@ -1,6 +1,6 @@
 async function getPrevVisitedTimes(finalTable, recordID) {
     const record = await finalTable.find(recordID);
-    return parseInt(record.get('visited_times'));
+    return parseInt(record.get('Rated'));
 }
 
 async function updateResult(tweetUserRecordIds, participantInput, participantID, finalTable) {
@@ -9,13 +9,13 @@ async function updateResult(tweetUserRecordIds, participantInput, participantID,
 
         const prevVisitedTimes = await getPrevVisitedTimes(finalTable, tweetUserRecordIds[i]);
 
-        const columnC = "c" + (prevVisitedTimes + 1).toString();
-        const columnP = "p" + (prevVisitedTimes + 1).toString();
+        const columnC = "C" + (prevVisitedTimes + 1).toString();
+        const columnP = "P" + (prevVisitedTimes + 1).toString();
 
         await finalTable.update([{
             "id": tweetUserRecordIds[i],
             "fields": {
-              "visited_times": prevVisitedTimes + 1,
+              "Rated": prevVisitedTimes + 1,
               [columnC]: participantInput[i],
               [columnP]: participantID
             }
