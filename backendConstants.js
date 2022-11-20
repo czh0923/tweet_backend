@@ -9,11 +9,12 @@ const table_final = final_main('final');
 
 // tweetID, #rated, tweet1, type1, .... 
 const base_final_structure = new Airtable({apiKey: process.env.API_KEY}).base('appdqVFUBNdKxao34');
-const table_final_structure = base_final_structure('Tweets');
+const table_tweets = base_final_structure('Tweets');
 
 exports.myTables = {
     baseMain : base_main,
-    finalTable: table_final_structure
+    tableTweets: table_tweets,
+
 };
 
 

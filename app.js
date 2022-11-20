@@ -18,9 +18,10 @@ app.get("/home", (req, res) => {
     res.send("this is home page");
 })
 
+
 app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
 
-    const table = myTables.finalTable;
+    const table = myTables.tableTweets;
 
     console.log(table);
 
@@ -109,7 +110,7 @@ app.get("/submit/:tweetUserRecordIds/:participantInput/:participantID", async (r
     let participantID = req.params.participantID;
 
     try {
-        await updateResult(tweetUserRecordIds, participantInput, participantID, myTables.finalTable);
+        await updateResult(tweetUserRecordIds, participantInput, participantID, myTables.tableTweets);
     } catch (e) {
         console.log(e);
     }
