@@ -1,3 +1,5 @@
+// local: run npx nodemon app.js
+
 const {myTables} = require("./backendConstants.js");
 const {getRandomTweetMain} = require("./getRandomTweets.js");
 const {shuffleArray, getRandomNumber} = require("./getRandomTweets.js");
