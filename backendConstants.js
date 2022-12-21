@@ -4,12 +4,10 @@ require("dotenv").config();
 const Airtable = require('airtable');
 const base_main = new Airtable({apiKey: process.env.API_KEY}).base('appQM4HHXqwvglt66');
 
-const final_main = new Airtable({apiKey: 'keyQUcYkOoAkjWXTV'}).base('app65fzWnjlaxHvUQ');
-const table_final = final_main('final');
-
 // tweetID, #rated, tweet1, type1, .... 
 const base_final_structure = new Airtable({apiKey: process.env.API_KEY}).base('appdqVFUBNdKxao34');
-const table_tweets = base_final_structure('Tweets');
+// const table_tweets = base_final_structure('Tweets');
+const table_tweets = base_final_structure('Tweets2');
 
 exports.myTables = {
     baseMain : base_main,
