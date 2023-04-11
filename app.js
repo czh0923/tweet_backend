@@ -29,9 +29,11 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
 
     var allRecordData = []; // [[reocrdID, tweetId, rated, tweet1, type1, ....], [], []]
 
+    const formula = `{Rated} < ${req.params.presentedUserNumber}`;
+
     table.select({
         view: "Grid view",
-        filterByFormula: "{Rated} < 2"
+        filterByFormula: formula
     }).eachPage(function page(records, fetchNextPage) {
     
         records.forEach(function(record) {
