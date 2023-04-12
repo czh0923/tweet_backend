@@ -1,6 +1,6 @@
 // local: run npx nodemon app.js
 
-const {myTables} = require("./backendConstants.js");
+const {rated, myTables} = require("./backendConstants.js");
 const {getRandomTweetMain} = require("./getRandomTweets.js");
 const {shuffleArray, getRandomNumber} = require("./getRandomTweets.js");
 const {updateResult} = require("./storeResultAndUpdateVisited.js");
@@ -29,7 +29,7 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
 
     var allRecordData = []; // [[reocrdID, tweetId, rated, tweet1, type1, ....], [], []]
 
-    const formula = `{Rated} < ${req.params.presentedUserNumber}`;
+    const formula = `{Rated} < ${rated}`;
 
     table.select({
         view: "Grid view",

@@ -12,6 +12,9 @@ const table_tweets = base_final_structure('sample1');
 // const table_tweets = base_final_structure('sample3');
 // const table_tweets = base_final_structure('sample4');
 
+const rated = 2;
+exports.rated = rated;
+
 exports.myTables = {
     baseMain : base_main,
     tableTweets: table_tweets,
