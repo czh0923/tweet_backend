@@ -8,8 +8,8 @@ const base_main = new Airtable({apiKey: process.env.API_KEY}).base('appQM4HHXqwv
 const base_final_structure = new Airtable({apiKey: process.env.API_KEY}).base('appdqVFUBNdKxao34');
 // const table_tweets = base_final_structure('Tweets');
 //const table_tweets = base_final_structure('sample1');
-const table_tweets = base_final_structure('sample2');
-// const table_tweets = base_final_structure('sample3');
+// const table_tweets = base_final_structure('sample2');
+const table_tweets = base_final_structure('sample3');
 // const table_tweets = base_final_structure('sample4');
 
 const rated = 2;
