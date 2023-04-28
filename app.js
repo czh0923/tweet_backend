@@ -21,7 +21,7 @@ app.get("/home", (req, res) => {
 })
 
 
-app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
+app.get("/getTwitterUser/:presentedUserNumber/:participantID", async (req, res) => {
 
     const table = myTables.tableTweets;
 
@@ -29,7 +29,10 @@ app.get("/getTwitterUser/:presentedUserNumber", async (req, res) => {
 
     var allRecordData = []; // [[reocrdID, tweetId, rated, tweet1, type1, ....], [], []]
 
-    const formula = `{Rated} < ${rated}`;
+    const participantID = req.params.participantID;
+
+    // const formula = `AND({Rated} < ${rated}, {P1} != ${participantID}, {P2} != ${participantID}, {P3} != ${participantID}, {P4} != ${participantID}, {P5} != ${participantID})`;
+    const formula = `AND({Rated} < ${rated}, NOT(FIND('${participantID}', CONCATENATE({P1}, {P2}, {P3}, {P4}, {P5}))))`;
 
     table.select({
         view: "Grid view",

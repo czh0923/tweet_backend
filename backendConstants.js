@@ -9,10 +9,10 @@ const base_final_structure = new Airtable({apiKey: process.env.API_KEY}).base('a
 // const table_tweets = base_final_structure('Tweets');
 //const table_tweets = base_final_structure('sample1');
 // const table_tweets = base_final_structure('sample2');
-const table_tweets = base_final_structure('sample3');
-// const table_tweets = base_final_structure('sample4');
+//const table_tweets = base_final_structure('sample3');
+const table_tweets = base_final_structure('sample4');
 
-const rated = 2;
+const rated = 1;
 exports.rated = rated;
 
 exports.myTables = {
