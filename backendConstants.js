@@ -13,7 +13,7 @@ const base_final_structure = new Airtable({apiKey: process.env.API_KEY}).base('a
 //const table_tweets = base_final_structure('sample4');
 const table_tweets = base_final_structure('total');
 
-const rated = 1;
+const rated = 2;
 exports.rated = rated;
 
 exports.myTables = {
